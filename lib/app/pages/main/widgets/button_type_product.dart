@@ -39,9 +39,9 @@ class ButtonTypeProduct extends StatelessWidget {
           child: Material(
             child: Observer(
               builder: (_) => InkWell(
-                onTap: mainController.productTypeSelectedList == this.productType
+                onTap: mainController.productTypeSelected == this.productType
                   ? null
-                  : () => mainController.setProductTypeList(this.productType),
+                  : () => mainController.setProductType(this.productType),
                 child: Ink(
                   color: context.colors.secondary,
                   child: Row(
@@ -52,7 +52,7 @@ class ButtonTypeProduct extends StatelessWidget {
                           ? Icons.coffee
                           : Icons.cake,
                         size: 28,
-                        color: this.productType == mainController.productTypeSelectedList
+                        color: this.productType == mainController.productTypeSelected
                             ? context.colors.primary
                             : const Color.fromRGBO(132, 132, 132, 1)
                       ),
@@ -63,7 +63,7 @@ class ButtonTypeProduct extends StatelessWidget {
                           : "Bolos",
                         style: context.textStyles.textBold.copyWith(
                           fontSize: 26,
-                          color: this.productType == mainController.productTypeSelectedList
+                          color: this.productType == mainController.productTypeSelected
                             ? context.colors.primary
                             : const Color.fromRGBO(132, 132, 132, 1)
                         )

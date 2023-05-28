@@ -25,37 +25,19 @@ mixin _$MainController on MainControllerBase, Store {
     });
   }
 
-  late final _$productTypeSelectedListAtom = Atom(
-      name: 'MainControllerBase.productTypeSelectedList', context: context);
+  late final _$productTypeSelectedAtom =
+      Atom(name: 'MainControllerBase.productTypeSelected', context: context);
 
   @override
-  ProductType get productTypeSelectedList {
-    _$productTypeSelectedListAtom.reportRead();
-    return super.productTypeSelectedList;
+  ProductType get productTypeSelected {
+    _$productTypeSelectedAtom.reportRead();
+    return super.productTypeSelected;
   }
 
   @override
-  set productTypeSelectedList(ProductType value) {
-    _$productTypeSelectedListAtom
-        .reportWrite(value, super.productTypeSelectedList, () {
-      super.productTypeSelectedList = value;
-    });
-  }
-
-  late final _$productTypeSelectedFormAtom = Atom(
-      name: 'MainControllerBase.productTypeSelectedForm', context: context);
-
-  @override
-  ProductType get productTypeSelectedForm {
-    _$productTypeSelectedFormAtom.reportRead();
-    return super.productTypeSelectedForm;
-  }
-
-  @override
-  set productTypeSelectedForm(ProductType value) {
-    _$productTypeSelectedFormAtom
-        .reportWrite(value, super.productTypeSelectedForm, () {
-      super.productTypeSelectedForm = value;
+  set productTypeSelected(ProductType value) {
+    _$productTypeSelectedAtom.reportWrite(value, super.productTypeSelected, () {
+      super.productTypeSelected = value;
     });
   }
 
@@ -106,33 +88,11 @@ mixin _$MainController on MainControllerBase, Store {
   }
 
   @override
-  void setProductTypeList(ProductType productType) {
+  void setProductType(ProductType productType) {
     final _$actionInfo = _$MainControllerBaseActionController.startAction(
-        name: 'MainControllerBase.setProductTypeList');
+        name: 'MainControllerBase.setProductType');
     try {
-      return super.setProductTypeList(productType);
-    } finally {
-      _$MainControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setProductTypeForm(ProductType productType) {
-    final _$actionInfo = _$MainControllerBaseActionController.startAction(
-        name: 'MainControllerBase.setProductTypeForm');
-    try {
-      return super.setProductTypeForm(productType);
-    } finally {
-      _$MainControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setUrlImageForm(String? url) {
-    final _$actionInfo = _$MainControllerBaseActionController.startAction(
-        name: 'MainControllerBase.setUrlImageForm');
-    try {
-      return super.setUrlImageForm(url);
+      return super.setProductType(productType);
     } finally {
       _$MainControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -175,8 +135,7 @@ mixin _$MainController on MainControllerBase, Store {
   String toString() {
     return '''
 allProducts: ${allProducts},
-productTypeSelectedList: ${productTypeSelectedList},
-productTypeSelectedForm: ${productTypeSelectedForm},
+productTypeSelected: ${productTypeSelected},
 dateTime: ${dateTime},
 urlImageForm: ${urlImageForm}
     ''';

@@ -1,3 +1,5 @@
+import "dart:math";
+
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
@@ -8,16 +10,17 @@ import "package:macieuls_coffee/app/core/ui/extensions/size_extensions.dart";
 import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
 import "package:macieuls_coffee/app/models/product_type.dart";
+import "package:macieuls_coffee/app/pages/main/controllers/form_controller.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/input_form.dart";
 
 class ModalFormProduct extends StatelessWidget {
   final ProductModel? product;
+  late final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameEC;
   late final TextEditingController _descriptionEC;
   late final TextEditingController _priceEC;
   late final TextEditingController _imageUrl;
-  late final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   ModalFormProduct({
     super.key,
@@ -26,13 +29,15 @@ class ModalFormProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FormController formController = context.read<FormController>();
     MainController mainController = context.read<MainController>();
+
+    formController.setImagePreview(this.product?.imageURL);
+    this._imageUrl = TextEditingController(text: this.product?.imageURL ?? "");
     this._nameEC = TextEditingController(text: this.product?.name ?? "");
+    formController.setProductType(this.product?.type ?? ProductType.cake);
     this._descriptionEC = TextEditingController(text: this.product?.description ?? "");
     this._priceEC = TextEditingController(text: this.product?.price.currencyBR ?? "");
-    this._imageUrl = TextEditingController(text: this.product?.imageURL ?? "");
-    mainController.setProductTypeForm(this.product?.type ?? ProductType.cake);
-    mainController.setUrlImageForm(this.product?.imageURL);
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -47,7 +52,7 @@ class ModalFormProduct extends StatelessWidget {
               child: Observer(
                 builder: (_) => ClipRRect(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                  child: mainController.urlImageForm == null
+                  child: formController.productImageURL == null
                     ? Container(
                         width: double.infinity,
                         color: Colors.grey,
@@ -61,7 +66,7 @@ class ModalFormProduct extends StatelessWidget {
                         )
                       )
                     : CachedNetworkImage(
-                        imageUrl: mainController.urlImageForm!,
+                        imageUrl: formController.productImageURL!,
                         imageBuilder: (_, imageProvider) => Image(
                           image: imageProvider,
                           fit: BoxFit.cover,
@@ -69,7 +74,7 @@ class ModalFormProduct extends StatelessWidget {
                         ),
                         placeholder: (_, __) => const SizedBox(height: 150, width: 150, child: CircularProgressIndicator()),
                         errorWidget: (_, __, ___) {
-                          mainController.setUrlImageForm(null);
+                          formController.setImagePreview(null);
                           return Container();
                         }
                       )
@@ -90,7 +95,7 @@ class ModalFormProduct extends StatelessWidget {
                         inputEC: this._imageUrl,
                         label: "URL da imagem",
                         textInputType: TextInputType.url,
-                        onChanged: (url) async => mainController.setUrlImageForm(url)
+                        onChanged: (url) => formController.setImagePreview(url)
                       ),
                       const SizedBox(height: 16),
                       InputForm(inputEC: this._nameEC, label: "Nome do produto", textInputType: TextInputType.text),
@@ -106,9 +111,9 @@ class ModalFormProduct extends StatelessWidget {
                           builder: (_) => DropdownButton<ProductType>(
                             icon: const Icon(Icons.arrow_drop_down, size: 28, color: Color.fromRGBO(217, 217, 217, 1)),
                             underline: Container(),
-                            value: mainController.productTypeSelectedForm,
+                            value: formController.productType,
                             style: context.textStyles.textBold.copyWith(fontSize: 20, color: const Color.fromRGBO(132, 132, 132, 1)),
-                            onChanged: (ProductType? productType) => mainController.setProductTypeForm(productType!),
+                            onChanged: (ProductType? productType) => formController.setProductType(productType!),
                             items: const [
                               DropdownMenuItem(
                                 value: ProductType.cake,
@@ -146,26 +151,20 @@ class ModalFormProduct extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    final bool isValid = this._formKey.currentState!.validate();
-                    if (!isValid) return;
+                    if (!this._formKey.currentState!.validate()) return;
 
                     ProductModel product = ProductModel(
-                      id: this.product!.id,
-                      name: this._nameEC.text,
-                      description: this._descriptionEC.text,
+                      id: this.product?.id ?? Random().nextInt(10001),
+                      name: this._nameEC.text.trim(),
+                      description: this._descriptionEC.text.trim(),
                       price: this._priceEC.text.withOutCurrencyBRFormat,
-                      imageURL: this._imageUrl.text,
-                      type: mainController.productTypeSelectedForm
+                      imageURL: this._imageUrl.text.trim(),
+                      type: formController.productType!
                     );
-                    this._descriptionEC.text
-                      = this._imageUrl.text
-                      = this._priceEC.text
-                      = this._nameEC.text = "";
-                    mainController.setUrlImageForm(null);
-                    mainController.setProductTypeForm(ProductType.cake);
-                    this.product == null
-                      ? mainController.createProduct(product)
-                      : mainController.updateProduct(product);
+
+                    formController.clear();
+
+                    this.product == null ? mainController.createProduct(product) : mainController.updateProduct(product);
                     Navigator.pop(context);
                   },
                   child: Text(
@@ -178,7 +177,7 @@ class ModalFormProduct extends StatelessWidget {
               )
             )
           ]
-        ),
+        )
       )
     );
   }

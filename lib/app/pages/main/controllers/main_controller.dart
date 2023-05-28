@@ -14,13 +14,10 @@ abstract class MainControllerBase with Store {
   @observable
   ObservableList<ProductModel> allProducts = ObservableList<ProductModel>()..addAll(mockedData);
 
-  List<ProductModel> get products => this.allProducts.where((p) => p.type == this.productTypeSelectedList).toList();
+  List<ProductModel> get products => this.allProducts.where((p) => p.type == this.productTypeSelected).toList();
 
   @observable
-  ProductType productTypeSelectedList = ProductType.cake;
-
-  @observable
-  ProductType productTypeSelectedForm = ProductType.cake;
+  ProductType productTypeSelected = ProductType.cake;
 
   @observable
   DateTime dateTime = DateTime.now();
@@ -37,13 +34,7 @@ abstract class MainControllerBase with Store {
   }
 
   @action
-  void setProductTypeList(ProductType productType) => this.productTypeSelectedList = productType;
-
-  @action
-  void setProductTypeForm(ProductType productType) => this.productTypeSelectedForm = productType;
-
-  @action
-  void setUrlImageForm(String? url) => this.urlImageForm = url;
+  void setProductType(ProductType productType) => this.productTypeSelected = productType;
 
   @action
   void createProduct(ProductModel product) => this.allProducts.add(product);

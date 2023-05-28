@@ -35,7 +35,7 @@ class ModalConfirmDelete extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(132, 132, 132, 1)),
                       child: Text("Não", style: context.textStyles.textBold.copyWith(fontSize: 20))
                     )
