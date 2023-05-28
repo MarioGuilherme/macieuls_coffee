@@ -29,7 +29,7 @@ class Navbar extends StatelessWidget {
               Observer(
                 builder: (_) => Text(
                   mainController.dateTime.formatBR,
-                  style: context.textStyles.textRegular.copyWith(fontSize: 20, color: context.colors.secondary)
+                  style: context.textStyles.textRegular.copyWith(fontSize: 18, color: context.colors.secondary)
                 )
               ),
               Padding(
@@ -38,7 +38,7 @@ class Navbar extends StatelessWidget {
                   children: [
                     VerticalDivider(color: context.colors.secondary),
                     const SizedBox(width: 7),
-                    Text("Admin", style: context.textStyles.textRegular.copyWith(fontSize: 20, color: context.colors.secondary)),
+                    Text("Admin", style: context.textStyles.textRegular.copyWith(fontSize: 18, color: context.colors.secondary)),
                     const SizedBox(width: 8),
                     Icon(Icons.person, color: context.colors.secondary, size: 32)
                   ]

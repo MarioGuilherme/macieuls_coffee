@@ -41,7 +41,7 @@ class ButtonTypeProduct extends StatelessWidget {
               builder: (_) => InkWell(
                 onTap: mainController.productTypeSelectedList == this.productType
                   ? null
-                  : () => mainController.toggleProductTypeList(this.productType),
+                  : () => mainController.setProductTypeList(this.productType),
                 child: Ink(
                   color: context.colors.secondary,
                   child: Row(
@@ -51,7 +51,7 @@ class ButtonTypeProduct extends StatelessWidget {
                         this.productType == ProductType.coffee
                           ? Icons.coffee
                           : Icons.cake,
-                        size: 32,
+                        size: 28,
                         color: this.productType == mainController.productTypeSelectedList
                             ? context.colors.primary
                             : const Color.fromRGBO(132, 132, 132, 1)
@@ -62,7 +62,7 @@ class ButtonTypeProduct extends StatelessWidget {
                           ? "Cafés"
                           : "Bolos",
                         style: context.textStyles.textBold.copyWith(
-                          fontSize: 32,
+                          fontSize: 26,
                           color: this.productType == mainController.productTypeSelectedList
                             ? context.colors.primary
                             : const Color.fromRGBO(132, 132, 132, 1)

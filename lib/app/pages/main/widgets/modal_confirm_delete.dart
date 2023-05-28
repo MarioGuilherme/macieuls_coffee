@@ -6,10 +6,10 @@ import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart";
 
-class DialogConfirmDelete extends StatelessWidget {
+class ModalConfirmDelete extends StatelessWidget {
   final ProductModel product;
 
-  const DialogConfirmDelete({super.key, required this.product});
+  const ModalConfirmDelete({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class DialogConfirmDelete extends StatelessWidget {
           children: [
             Text(
               "Você realmente deseja excluir este item?",
-              style: context.textStyles.textBold.copyWith(fontSize: 24, color: const Color.fromRGBO(132, 132, 132, 1))
+              style: context.textStyles.textBold.copyWith(fontSize: 20, color: const Color.fromRGBO(132, 132, 132, 1))
             ),
             const SizedBox(height: 60),
             SizedBox(
@@ -37,18 +37,18 @@ class DialogConfirmDelete extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(132, 132, 132, 1)),
-                      child: Text("Não", style: context.textStyles.textBold.copyWith(fontSize: 24))
+                      child: Text("Não", style: context.textStyles.textBold.copyWith(fontSize: 20))
                     )
                   ),
                   const SizedBox(width: 20),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        mainController.deleteProduct(this.product);
+                        mainController.deleteProduct(this.product.id);
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(201, 36, 0, 1)),
-                      child: Text("Excluir", style: context.textStyles.textBold.copyWith(fontSize: 24))
+                      child: Text("Excluir", style: context.textStyles.textBold.copyWith(fontSize: 20))
                     )
                   )
                 ]

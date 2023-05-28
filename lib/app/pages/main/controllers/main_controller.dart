@@ -25,6 +25,9 @@ abstract class MainControllerBase with Store {
   @observable
   DateTime dateTime = DateTime.now();
 
+  @observable
+  String? urlImageForm;
+
   @action
   void initTimer() {
     Timer.periodic(const Duration(milliseconds: 333), (timer) {
@@ -34,11 +37,24 @@ abstract class MainControllerBase with Store {
   }
 
   @action
-  void toggleProductTypeList(ProductType productType) => this.productTypeSelectedList = productType;
+  void setProductTypeList(ProductType productType) => this.productTypeSelectedList = productType;
 
   @action
-  void toggleProductTypeForm(ProductType productType) => this.productTypeSelectedForm = productType;
+  void setProductTypeForm(ProductType productType) => this.productTypeSelectedForm = productType;
 
   @action
-  void deleteProduct(ProductModel product) => this.allProducts.removeWhere((p) => p == product);
+  void setUrlImageForm(String? url) => this.urlImageForm = url;
+
+  @action
+  void createProduct(ProductModel product) => this.allProducts.add(product);
+
+  @action
+  void updateProduct(ProductModel newProduct) {
+    final ProductModel productToUpdate = this.allProducts.firstWhere((product) => product.id == newProduct.id);
+    final int index = this.allProducts.indexOf(productToUpdate);
+    this.allProducts[index] = newProduct;
+  }
+
+  @action
+  void deleteProduct(int idProduct) => this.allProducts.removeWhere((product) => product.id == idProduct);
 }

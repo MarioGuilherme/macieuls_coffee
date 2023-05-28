@@ -7,8 +7,9 @@ import "package:macieuls_coffee/app/core/ui/styles/colors_app.dart";
 import "package:macieuls_coffee/app/models/product_type.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/button_type_product.dart";
-import "package:macieuls_coffee/app/pages/main/widgets/dialog_form_product.dart";
+import "package:macieuls_coffee/app/pages/main/widgets/modal_form_product.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/navbar.dart";
+import "package:responsive_grid_list/responsive_grid_list.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/product_tile.dart";
 
 class MainPage extends StatelessWidget {
@@ -40,16 +41,16 @@ class MainPage extends StatelessWidget {
                       ButtonTypeProduct(productType: ProductType.coffee)
                     ]
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 20),
                   Observer(
-                    builder: (_) => GridView.count(
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      shrinkWrap: true,
-                      primary: false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(10),
-                      crossAxisCount: (context.screenWidth / 320).floor(),
+                    builder: (_) => ResponsiveGridList(
+                      horizontalGridSpacing: 40,
+                      verticalGridSpacing: 40,
+                      verticalGridMargin: 30,
+                      minItemWidth: 280,
+                      minItemsPerRow: 1,
+                      maxItemsPerRow: 10,
+                      listViewBuilderOptions: ListViewBuilderOptions(shrinkWrap: true),
                       children: mainController.products.map((product) => ProductTile(product: product)).toList()
                     )
                   )
@@ -65,7 +66,7 @@ class MainPage extends StatelessWidget {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => const DialogFormProduct()
+            builder: (context) => ModalFormProduct()
           );
         }
       )

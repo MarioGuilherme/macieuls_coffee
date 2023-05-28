@@ -75,6 +75,22 @@ mixin _$MainController on MainControllerBase, Store {
     });
   }
 
+  late final _$urlImageFormAtom =
+      Atom(name: 'MainControllerBase.urlImageForm', context: context);
+
+  @override
+  String? get urlImageForm {
+    _$urlImageFormAtom.reportRead();
+    return super.urlImageForm;
+  }
+
+  @override
+  set urlImageForm(String? value) {
+    _$urlImageFormAtom.reportWrite(value, super.urlImageForm, () {
+      super.urlImageForm = value;
+    });
+  }
+
   late final _$MainControllerBaseActionController =
       ActionController(name: 'MainControllerBase', context: context);
 
@@ -90,33 +106,66 @@ mixin _$MainController on MainControllerBase, Store {
   }
 
   @override
-  void toggleProductTypeList(ProductType productType) {
+  void setProductTypeList(ProductType productType) {
     final _$actionInfo = _$MainControllerBaseActionController.startAction(
-        name: 'MainControllerBase.toggleProductTypeList');
+        name: 'MainControllerBase.setProductTypeList');
     try {
-      return super.toggleProductTypeList(productType);
+      return super.setProductTypeList(productType);
     } finally {
       _$MainControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void toggleProductTypeForm(ProductType productType) {
+  void setProductTypeForm(ProductType productType) {
     final _$actionInfo = _$MainControllerBaseActionController.startAction(
-        name: 'MainControllerBase.toggleProductTypeForm');
+        name: 'MainControllerBase.setProductTypeForm');
     try {
-      return super.toggleProductTypeForm(productType);
+      return super.setProductTypeForm(productType);
     } finally {
       _$MainControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void deleteProduct(ProductModel product) {
+  void setUrlImageForm(String? url) {
+    final _$actionInfo = _$MainControllerBaseActionController.startAction(
+        name: 'MainControllerBase.setUrlImageForm');
+    try {
+      return super.setUrlImageForm(url);
+    } finally {
+      _$MainControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void createProduct(ProductModel product) {
+    final _$actionInfo = _$MainControllerBaseActionController.startAction(
+        name: 'MainControllerBase.createProduct');
+    try {
+      return super.createProduct(product);
+    } finally {
+      _$MainControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void updateProduct(ProductModel newProduct) {
+    final _$actionInfo = _$MainControllerBaseActionController.startAction(
+        name: 'MainControllerBase.updateProduct');
+    try {
+      return super.updateProduct(newProduct);
+    } finally {
+      _$MainControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void deleteProduct(int idProduct) {
     final _$actionInfo = _$MainControllerBaseActionController.startAction(
         name: 'MainControllerBase.deleteProduct');
     try {
-      return super.deleteProduct(product);
+      return super.deleteProduct(idProduct);
     } finally {
       _$MainControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -128,7 +177,8 @@ mixin _$MainController on MainControllerBase, Store {
 allProducts: ${allProducts},
 productTypeSelectedList: ${productTypeSelectedList},
 productTypeSelectedForm: ${productTypeSelectedForm},
-dateTime: ${dateTime}
+dateTime: ${dateTime},
+urlImageForm: ${urlImageForm}
     ''';
   }
 }
