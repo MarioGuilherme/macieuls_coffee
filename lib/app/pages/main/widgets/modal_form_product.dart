@@ -1,11 +1,9 @@
-
-
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
-import "package:macieuls_coffee/app/core/extensions/format_currency_extension.dart";
 import "package:provider/provider.dart";
 
+import "package:macieuls_coffee/app/core/extensions/format_currency_extension.dart";
 import "package:macieuls_coffee/app/core/ui/extensions/size_extensions.dart";
 import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
@@ -150,12 +148,6 @@ class ModalFormProduct extends StatelessWidget {
                   onPressed: () {
                     final bool isValid = this._formKey.currentState!.validate();
                     if (!isValid) return;
-
-                    try {
-                      var _ = CachedNetworkImage(imageUrl: this._imageUrl.text);
-                    } catch (e) {
-                      print("erro");
-                    }
 
                     ProductModel product = ProductModel(
                       id: this.product!.id,

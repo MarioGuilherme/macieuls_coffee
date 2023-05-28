@@ -1,9 +1,9 @@
-import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:provider/provider.dart";
 
 import "package:macieuls_coffee/app/core/ui/styles/colors_app.dart";
+import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/models/product_type.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart";
 

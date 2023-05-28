@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:provider/provider.dart";
+import "package:responsive_grid_list/responsive_grid_list.dart";
 
 import "package:macieuls_coffee/app/core/ui/extensions/size_extensions.dart";
 import "package:macieuls_coffee/app/core/ui/styles/colors_app.dart";
@@ -9,7 +10,6 @@ import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart"
 import "package:macieuls_coffee/app/pages/main/widgets/button_type_product.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/modal_form_product.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/navbar.dart";
-import "package:responsive_grid_list/responsive_grid_list.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/product_tile.dart";
 
 class MainPage extends StatelessWidget {
@@ -63,12 +63,10 @@ class MainPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: context.colors.primary,
         child: const Icon(Icons.add, size: 32),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => ModalFormProduct()
-          );
-        }
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => ModalFormProduct()
+        )
       )
     );
   }

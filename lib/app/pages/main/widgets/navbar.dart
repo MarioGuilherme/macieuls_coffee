@@ -1,10 +1,10 @@
-import "package:macieuls_coffee/app/core/ui/styles/colors_app.dart";
-import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:provider/provider.dart";
 
 import "package:macieuls_coffee/app/core/extensions/format_time_exntension.dart";
+import "package:macieuls_coffee/app/core/ui/styles/colors_app.dart";
+import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart";
 
 class Navbar extends StatelessWidget {

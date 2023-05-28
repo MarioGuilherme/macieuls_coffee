@@ -59,12 +59,10 @@ class ProductTile extends StatelessWidget {
                       child: SizedBox(
                         height: 46,
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => ModalFormProduct(product: this.product)
-                            );
-                          },
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (context) => ModalFormProduct(product: this.product)
+                          ),
                           icon: const Icon(Icons.edit),
                           style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(132, 132, 132, 1)),
                           label: Text("Editar", style: context.textStyles.textBold.copyWith(fontSize: 16))
@@ -76,12 +74,10 @@ class ProductTile extends StatelessWidget {
                       child: SizedBox(
                         height: 46,
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => ModalConfirmDelete(product: this.product)
-                            );
-                          },
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (context) => ModalConfirmDelete(product: this.product)
+                          ),
                           icon: const Icon(Icons.delete),
                           style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(201, 36, 0, 1)),
                           label: Text(
