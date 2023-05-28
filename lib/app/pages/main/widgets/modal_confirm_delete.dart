@@ -5,6 +5,7 @@ import "package:macieuls_coffee/app/core/ui/extensions/size_extensions.dart";
 import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart";
+import "package:macieuls_coffee/app/pages/main/widgets/message_dialog.dart";
 
 class ModalConfirmDelete extends StatelessWidget {
   final ProductModel product;
@@ -19,7 +20,9 @@ class ModalConfirmDelete extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Container(
         padding: const EdgeInsets.all(40),
-        width: context.percentWidth(.5),
+        width: context.screenWidth >= 1096
+          ? context.percentWidth(.35)
+          : context.percentWidth(.90),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -29,7 +32,7 @@ class ModalConfirmDelete extends StatelessWidget {
             ),
             const SizedBox(height: 60),
             SizedBox(
-              height: 65,
+              height: 50,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -46,6 +49,7 @@ class ModalConfirmDelete extends StatelessWidget {
                       onPressed: () {
                         mainController.deleteProduct(this.product.id);
                         Navigator.pop(context);
+                        showDialog(context: context, builder: (_) => const MessageDialog(message: "Produto deletado com êxito"));
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(201, 36, 0, 1)),
                       child: Text("Excluir", style: context.textStyles.textBold.copyWith(fontSize: 20))

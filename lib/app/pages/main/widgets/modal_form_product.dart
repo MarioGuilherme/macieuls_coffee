@@ -13,6 +13,7 @@ import "package:macieuls_coffee/app/models/product_type.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/form_controller.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/input_form.dart";
+import "package:macieuls_coffee/app/pages/main/widgets/message_dialog.dart";
 
 class ModalFormProduct extends StatelessWidget {
   final ProductModel? product;
@@ -70,7 +71,7 @@ class ModalFormProduct extends StatelessWidget {
                         imageBuilder: (_, imageProvider) => Image(
                           image: imageProvider,
                           fit: BoxFit.cover,
-                          width: double.infinity,
+                          width: double.infinity
                         ),
                         placeholder: (_, __) => const SizedBox(height: 150, width: 150, child: CircularProgressIndicator()),
                         errorWidget: (_, __, ___) {
@@ -166,6 +167,9 @@ class ModalFormProduct extends StatelessWidget {
 
                     this.product == null ? mainController.createProduct(product) : mainController.updateProduct(product);
                     Navigator.pop(context);
+                    showDialog(context: context, builder: (_) => MessageDialog(
+                      message: "Produto ${this.product == null ? "cadastrado" : "atualizado"} com êxito"
+                    ));
                   },
                   child: Text(
                     this.product == null
