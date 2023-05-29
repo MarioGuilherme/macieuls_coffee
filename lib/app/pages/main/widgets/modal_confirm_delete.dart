@@ -28,7 +28,8 @@ class ModalConfirmDelete extends StatelessWidget {
           children: [
             Text(
               "Você realmente deseja excluir este item?",
-              style: context.textStyles.textBold.copyWith(fontSize: 20, color: const Color.fromRGBO(132, 132, 132, 1))
+              textAlign: TextAlign.center,
+              style: context.textStyles.textBold.copyWith(fontSize: 18, color: const Color.fromRGBO(132, 132, 132, 1))
             ),
             const SizedBox(height: 60),
             SizedBox(
@@ -40,7 +41,7 @@ class ModalConfirmDelete extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(132, 132, 132, 1)),
-                      child: Text("Não", style: context.textStyles.textBold.copyWith(fontSize: 20))
+                      child: Text("Não", textAlign: TextAlign.center, style: context.textStyles.textBold.copyWith(fontSize: 18))
                     )
                   ),
                   const SizedBox(width: 20),
@@ -52,7 +53,7 @@ class ModalConfirmDelete extends StatelessWidget {
                         showDialog(context: context, builder: (_) => const MessageDialog(message: "Produto deletado com êxito"));
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(201, 36, 0, 1)),
-                      child: Text("Excluir", style: context.textStyles.textBold.copyWith(fontSize: 20))
+                      child: Text("Excluir", textAlign: TextAlign.center, style: context.textStyles.textBold.copyWith(fontSize: 18))
                     )
                   )
                 ]

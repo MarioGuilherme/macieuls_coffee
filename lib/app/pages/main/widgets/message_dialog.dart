@@ -25,6 +25,7 @@ class MessageDialog extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               this.message,
+              textAlign: TextAlign.center,
               style: context.textStyles.textBold.copyWith(fontSize: 20, color: const Color.fromRGBO(132, 132, 132, 1))
             ),
             const SizedBox(height: 30),
@@ -37,7 +38,7 @@ class MessageDialog extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(backgroundColor: context.colors.primary),
-                      child: Text("Ok", style: context.textStyles.textBold.copyWith(fontSize: 20))
+                      child: Text("Ok", style: context.textStyles.textBold.copyWith(fontSize: 18))
                     )
                   )
                 ]

@@ -46,6 +46,7 @@ class InputForm extends StatelessWidget {
       style: context.textStyles.textSemiBold.copyWith(fontSize: 18),
       cursorColor: context.colors.primary,
       maxLines: this.isMultiLine ? null : 1,
+      textAlign: TextAlign.justify,
       decoration: InputDecoration(
         labelText: this.label,
         filled: true,

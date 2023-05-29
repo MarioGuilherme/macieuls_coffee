@@ -17,13 +17,13 @@ dependencies:
   intl: ^0.18.1
   cached_network_image: ^3.2.3
 
-# flutter_launcher_icons:
-#   image_path: "assets/app-icon.png"
-#   web:
-#     generate: true
-#     image_path: "assets/app-icon.png"
-#     background_color: "#333541"
-#     theme_color: "#444653"
+flutter_launcher_icons:
+  image_path: "assets/logo-web.png"
+  web:
+    generate: true
+    image_path: "assets/logo-web.png"
+    background_color: "#30BE00"
+    theme_color: "#FFFFF"
 
 dev_dependencies:
   flutter_test:
