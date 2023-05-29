@@ -1,4 +1,0 @@
-enum ProductType {
-  cake,
-  coffee
-}
