@@ -4,6 +4,7 @@ import "package:macieuls_coffee/app/core/extensions/format_currency_extension.da
 import "package:macieuls_coffee/app/core/ui/styles/colors_app.dart";
 import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
+import "package:macieuls_coffee/app/models/product_type.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/modal_confirm_delete.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/modal_form_product.dart";
 
@@ -44,6 +45,10 @@ class ProductTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  this.product.type == ProductType.cake ? "Bolo" : "Café",
+                  style: context.textStyles.textBold.copyWith(color: const Color.fromARGB(255, 122, 122, 122), fontSize: 14)
+                ),
                 Text(
                   this.product.name,
                   style: context.textStyles.textBold.copyWith(color: Colors.black, fontSize: 18)
