@@ -2,17 +2,21 @@ import "dart:async";
 
 import "package:mobx/mobx.dart";
 
-import "package:macieuls_coffee/app/data/mocked_data.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
 import "package:macieuls_coffee/app/models/product_type.dart";
+import "package:macieuls_coffee/app/repositories/products/products_repository.dart";
 
 part "main_controller.g.dart";
 
 class MainController = MainControllerBase with _$MainController;
 
 abstract class MainControllerBase with Store {
+  final ProductsRepository _productsRepository;
+
+  MainControllerBase(this._productsRepository);
+
   @observable
-  ObservableList<ProductModel> allProducts = ObservableList<ProductModel>()..addAll(mockedData);
+  ObservableList<ProductModel> allProducts = ObservableList<ProductModel>();
 
   List<ProductModel> get products => this.allProducts.where((p) => p.type == this.productTypeSelected).toList();
 
@@ -37,15 +41,16 @@ abstract class MainControllerBase with Store {
   void setProductType(ProductType productType) => this.productTypeSelected = productType;
 
   @action
-  void createProduct(ProductModel product) => this.allProducts.add(product);
-
-  @action
-  void updateProduct(ProductModel newProduct) {
-    final ProductModel productToUpdate = this.allProducts.firstWhere((product) => product.id == newProduct.id);
-    final int index = this.allProducts.indexOf(productToUpdate);
-    this.allProducts[index] = newProduct;
+  Future<void> loadProducts() async {
+    this.allProducts.addAll(await this._productsRepository.getProducts());
   }
 
   @action
-  void deleteProduct(int idProduct) => this.allProducts.removeWhere((product) => product.id == idProduct);
+  Future<bool> createProduct(ProductModel product) async => await this._productsRepository.createProduct(product);
+
+  @action
+  Future<bool> updateProduct(ProductModel product) async => await this._productsRepository.updateProduct(product);
+
+  @action
+  Future<bool> deleteProduct(String idProduct) async => await this._productsRepository.deleteProduct(idProduct);
 }

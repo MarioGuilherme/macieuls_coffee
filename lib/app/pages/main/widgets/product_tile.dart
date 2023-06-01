@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 
-import "package:macieuls_coffee/app/core/extensions/format_currency_extension.dart";
 import "package:macieuls_coffee/app/core/ui/styles/colors_app.dart";
 import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
@@ -54,7 +53,7 @@ class ProductTile extends StatelessWidget {
                   style: context.textStyles.textBold.copyWith(color: Colors.black, fontSize: 18)
                 ),
                 Text(
-                  this.product.price.currencyBR,
+                  this.product.price,
                   style: context.textStyles.textBold.copyWith(fontSize: 16, color: context.colors.primary)
                 ),
                 const SizedBox(height: 15),

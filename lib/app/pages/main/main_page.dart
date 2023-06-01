@@ -18,6 +18,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MainController mainController = context.read<MainController>();
+    mainController.loadProducts();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -43,16 +44,18 @@ class MainPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Observer(
-                    builder: (_) => ResponsiveGridList(
-                      horizontalGridSpacing: 40,
-                      verticalGridSpacing: 40,
-                      verticalGridMargin: 30,
-                      minItemWidth: 280,
-                      minItemsPerRow: 1,
-                      maxItemsPerRow: 10,
-                      listViewBuilderOptions: ListViewBuilderOptions(shrinkWrap: true),
-                      children: mainController.products.map((product) => ProductTile(product: product)).toList()
-                    )
+                    builder: (_) => mainController.products.isEmpty
+                      ? const Text("Vazio")
+                      : ResponsiveGridList(
+                        horizontalGridSpacing: 40,
+                        verticalGridSpacing: 40,
+                        verticalGridMargin: 30,
+                        minItemWidth: 280,
+                        minItemsPerRow: 1,
+                        maxItemsPerRow: 10,
+                        listViewBuilderOptions: ListViewBuilderOptions(shrinkWrap: true),
+                        children: mainController.products.map((product) => ProductTile(product: product)).toList()
+                      )
                   )
                 ]
               )

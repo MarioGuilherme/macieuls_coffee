@@ -48,7 +48,7 @@ class ModalConfirmDelete extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        mainController.deleteProduct(this.product.id);
+                        mainController.deleteProduct(this.product.id!);
                         Navigator.pop(context);
                         showDialog(context: context, builder: (_) => const MessageDialog(message: "Produto deletado com êxito"));
                       },

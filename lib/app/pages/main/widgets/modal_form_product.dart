@@ -1,4 +1,3 @@
-import "dart:math";
 
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
@@ -34,7 +33,7 @@ class ModalFormProduct extends StatelessWidget {
     TextEditingController? nameEC = TextEditingController(text: this.product?.name ?? "");
     formController.setProductType(this.product?.type ?? ProductType.cake);
     TextEditingController? descriptionEC = TextEditingController(text: this.product?.description ?? "");
-    TextEditingController? priceEC = TextEditingController(text: this.product?.price.currencyBR ?? "");
+    TextEditingController? priceEC = TextEditingController(text: this.product?.price ?? "");
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -152,10 +151,10 @@ class ModalFormProduct extends StatelessWidget {
                     if (!this._formKey.currentState!.validate()) return;
 
                     ProductModel product = ProductModel(
-                      id: this.product?.id ?? Random().nextInt(10001),
+                      id: this.product?.id,
                       name: nameEC.text.trim(),
                       description: descriptionEC.text.trim(),
-                      price: priceEC.text.withOutCurrencyBRFormat,
+                      price: priceEC.text,
                       imageURL: imageUrlEC.text.trim(),
                       type: formController.productType!
                     );

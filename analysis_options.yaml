@@ -9,3 +9,4 @@ linter:
     prefer_double_quotes: true
     unnecessary_this: false
     curly_braces_in_flow_control_structures: false
+    constant_identifier_names: false
