@@ -64,6 +64,7 @@ class ProductTile extends StatelessWidget {
                         height: 46,
                         child: ElevatedButton.icon(
                           onPressed: () => showDialog(
+                            barrierDismissible: false,
                             context: context,
                             builder: (context) => ModalFormProduct(product: this.product)
                           ),
@@ -79,6 +80,7 @@ class ProductTile extends StatelessWidget {
                         height: 46,
                         child: ElevatedButton.icon(
                           onPressed: () => showDialog(
+                            barrierDismissible: false,
                             context: context,
                             builder: (context) => ModalConfirmDelete(product: this.product)
                           ),

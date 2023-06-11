@@ -1,21 +1,16 @@
-
 import "package:dio/dio.dart";
 
 import "package:macieuls_coffee/app/core/config/env.dart";
-import "package:macieuls_coffee/app/core/extensions/format_enum_extension.dart";
-
-enum HttpMethod {
-  GET,
-  POST,
-  PUT,
-  DELETE
-}
+import "package:macieuls_coffee/app/core/http/adapter/adapter.dart";
+import "package:macieuls_coffee/app/core/http/http_method.dart";
 
 class HttpClient {
+  final Adapter? adapter;
+
   final _dio = Dio(BaseOptions(baseUrl: Env.instance["urlAPI"] ?? ""));
   final _token = Env.instance["token"] ?? "";
 
-  HttpClient() {
+  HttpClient(this.adapter) {
     this._dio.interceptors.add(LogInterceptor(
       requestBody: true,
       responseBody: true,
@@ -26,39 +21,10 @@ class HttpClient {
 
   Future<Response> restRequest(String resource, HttpMethod method, [Map<String, dynamic>? data]) async {
     Map<String, dynamic>? queryParameters;
-    Options options;
+    Options? options;
 
-    switch (method) {
-      case HttpMethod.GET:
-        queryParameters = { "token": this._token };
-        options = Options(method: method.string);
-        break;
-
-      case HttpMethod.POST:
-        data!.addAll({ "token": this._token });
-        options = Options(
-          method: method.string,
-          contentType: Headers.formUrlEncodedContentType
-        );
-        break;
-
-      case HttpMethod.PUT:
-        data!.addAll({ "token": this._token });
-        queryParameters = { "method": method.string };
-        options = Options(
-          method: HttpMethod.POST.string,
-          contentType: Headers.formUrlEncodedContentType
-        );
-        break;
-
-      case HttpMethod.DELETE:
-        queryParameters = {
-          "token": this._token,
-          "method": method.string
-        }..addAll(data!);
-        options = Options(method: HttpMethod.GET.string);
-        break;
-    }
+    if (this.adapter != null)
+      (data, queryParameters, options) = this.adapter!.adapterHttp(method, this._token, data);
 
     return await this._dio.request(
       "$resource.php",

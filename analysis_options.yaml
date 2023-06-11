@@ -10,3 +10,4 @@ linter:
     unnecessary_this: false
     curly_braces_in_flow_control_structures: false
     constant_identifier_names: false
+    prefer_final_locals: true

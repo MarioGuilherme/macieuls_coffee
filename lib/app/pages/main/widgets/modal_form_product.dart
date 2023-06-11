@@ -1,15 +1,18 @@
+import "dart:developer";
 
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:provider/provider.dart";
 
+import "package:macieuls_coffee/app/core/exceptions/controller_exception.dart";
+import "package:macieuls_coffee/app/core/exceptions/macieuls_coffee_exception.dart";
 import "package:macieuls_coffee/app/core/extensions/format_currency_extension.dart";
 import "package:macieuls_coffee/app/core/ui/extensions/size_extensions.dart";
+import "package:macieuls_coffee/app/core/ui/styles/colors_app.dart";
 import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
 import "package:macieuls_coffee/app/models/product_type.dart";
-import "package:macieuls_coffee/app/pages/main/controllers/form_controller.dart";
 import "package:macieuls_coffee/app/pages/main/controllers/main_controller.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/input_form.dart";
 import "package:macieuls_coffee/app/pages/main/widgets/message_dialog.dart";
@@ -25,15 +28,15 @@ class ModalFormProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FormController formController = context.read<FormController>();
-    MainController mainController = context.read<MainController>();
+    final bool isUpdate = this.product != null;
+    final MainController mainController = context.read<MainController>();
 
-    formController.setImagePreview(this.product?.imageURL);
-    TextEditingController? imageUrlEC = TextEditingController(text: this.product?.imageURL ?? "");
-    TextEditingController? nameEC = TextEditingController(text: this.product?.name ?? "");
-    formController.setProductType(this.product?.type ?? ProductType.cake);
-    TextEditingController? descriptionEC = TextEditingController(text: this.product?.description ?? "");
-    TextEditingController? priceEC = TextEditingController(text: this.product?.price ?? "");
+    mainController.setImagePreview(this.product?.imageURL);
+    mainController.setProductTypeForm(this.product?.type ?? ProductType.cake);
+    final TextEditingController imageUrlEC = TextEditingController(text: this.product?.imageURL ?? "");
+    final TextEditingController nameEC = TextEditingController(text: this.product?.name ?? "");
+    final TextEditingController descriptionEC = TextEditingController(text: this.product?.description ?? "");
+    final TextEditingController priceEC = TextEditingController(text: this.product?.price ?? "");
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -46,34 +49,49 @@ class ModalFormProduct extends StatelessWidget {
           children: [
             Expanded(
               child: Observer(
-                builder: (_) => ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                  child: formController.productImageURL == null
-                    ? Container(
-                        width: double.infinity,
-                        color: Colors.grey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.image, size: 50, color: Colors.white),
-                            const SizedBox(height: 25),
-                            Text("Sua imagem ficará aqui!", style: context.textStyles.textBold.copyWith(fontSize: 18, color: Colors.white))
-                          ]
+                builder: (_) => Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                      child: mainController.productImageURL == null
+                        ? Container(
+                            width: double.infinity,
+                            color: Colors.grey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.image, size: 50, color: Colors.white),
+                                const SizedBox(height: 25),
+                                Text("Sua imagem ficará aqui!", style: context.textStyles.textBold.copyWith(fontSize: 18, color: Colors.white))
+                              ]
+                            )
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: mainController.productImageURL!,
+                            imageBuilder: (_, imageProvider) => Image(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                              width: double.infinity
+                            ),
+                            placeholder: (_, __) => const SizedBox(height: 150, width: 150, child: CircularProgressIndicator()),
+                            errorWidget: (_, __, ___) {
+                              mainController.setImagePreview(null);
+                              return Container();
+                            }
+                          )
+                    ),
+                    Positioned(
+                      top: 5,
+                      right: 5,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(10),
+                        child: InkWell(
+                          onTap: mainController.isWaitingForAPISave ? null : () => Navigator.pop(context),
+                          child: Ink(child: const Icon(Icons.close))
                         )
                       )
-                    : CachedNetworkImage(
-                        imageUrl: formController.productImageURL!,
-                        imageBuilder: (_, imageProvider) => Image(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                          width: double.infinity
-                        ),
-                        placeholder: (_, __) => const SizedBox(height: 150, width: 150, child: CircularProgressIndicator()),
-                        errorWidget: (_, __, ___) {
-                          formController.setImagePreview(null);
-                          return Container();
-                        }
-                      )
+                    )
+                  ]
                 )
               )
             ),
@@ -92,7 +110,7 @@ class ModalFormProduct extends StatelessWidget {
                         inputEC: imageUrlEC,
                         label: "URL da imagem",
                         textInputType: TextInputType.url,
-                        onChanged: (url) => formController.setImagePreview(url)
+                        onChanged: (url) => mainController.setImagePreview(url)
                       ),
                       const SizedBox(height: 16),
                       InputForm(inputEC: nameEC, label: "Nome do produto", textInputType: TextInputType.text),
@@ -108,9 +126,9 @@ class ModalFormProduct extends StatelessWidget {
                           builder: (_) => DropdownButton<ProductType>(
                             icon: const Icon(Icons.arrow_drop_down, size: 28, color: Color.fromRGBO(217, 217, 217, 1)),
                             underline: Container(),
-                            value: formController.productType,
+                            value: mainController.productTypeForm,
                             style: context.textStyles.textBold.copyWith(fontSize: 20, color: const Color.fromRGBO(132, 132, 132, 1)),
-                            onChanged: (ProductType? productType) => formController.setProductType(productType!),
+                            onChanged: (ProductType? productType) => mainController.setProductTypeForm(productType!),
                             items: const [
                               DropdownMenuItem(
                                 value: ProductType.cake,
@@ -146,32 +164,62 @@ class ModalFormProduct extends StatelessWidget {
               child: SizedBox(
                 height: 50,
                 width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (!this._formKey.currentState!.validate()) return;
+                child: Observer(
+                  builder: (_) => ElevatedButton(
+                    onPressed: mainController.isWaitingForAPISave
+                      ? null
+                      : () async {
+                        try {
+                          if (!this._formKey.currentState!.validate()) return;
 
-                    ProductModel product = ProductModel(
-                      id: this.product?.id,
-                      name: nameEC.text.trim(),
-                      description: descriptionEC.text.trim(),
-                      price: priceEC.text,
-                      imageURL: imageUrlEC.text.trim(),
-                      type: formController.productType!
-                    );
+                          final ProductModel product = ProductModel(
+                            id: this.product?.id,
+                            name: nameEC.text.trim(),
+                            description: descriptionEC.text.trim(),
+                            price: priceEC.text,
+                            imageURL: imageUrlEC.text.trim(),
+                            type: mainController.productTypeForm
+                          );
 
-                    formController.clear();
+                          final bool isSuccess = await mainController.saveProduct(product, isUpdate: isUpdate);
 
-                    this.product == null ? mainController.createProduct(product) : mainController.updateProduct(product);
-                    Navigator.pop(context);
-                    showDialog(context: context, builder: (_) => MessageDialog(
-                      message: "Produto ${this.product == null ? "cadastrado" : "atualizado"} com êxito"
-                    ));
-                  },
-                  child: Text(
-                    this.product == null
-                      ? "Cadastrar"
-                      : "Salvar",
-                    style: context.textStyles.textBold.copyWith(fontSize: 20)
+                          if (!isSuccess) throw ControllerException(message: "Erro ao atualizar o produto!");
+
+                          mainController.reloadProducts();
+
+                          if (isUpdate && context.mounted)
+                            Navigator.pop(context);
+                          else {
+                            imageUrlEC.text = "";
+                            nameEC.text = "";
+                            descriptionEC.text = "";
+                            priceEC.text = "";
+                            mainController.clearForm();
+                          }
+
+                          if (context.mounted)
+                            showDialog(
+                              context: context,
+                              builder: (_) => MessageDialog(
+                                message: "Produto ${isUpdate ? "atualizado" : "cadastrado"} com êxito",
+                                icon: Icon(Icons.check_circle, color: context.colors.primary, size: 64)
+                              )
+                            );
+                        } on MacieulsCoffeeException catch (e, s) {
+                          mainController.setIsWaitingAPISave(false);
+                          log("Erro", stackTrace: s);
+                          showDialog(
+                            context: context,
+                            builder: (_) => MessageDialog(
+                              message: e.message,
+                              icon: const Icon(Icons.error, color: Colors.red, size: 64)
+                            )
+                          );
+                        }
+                      },
+                    child: mainController.isWaitingForAPISave
+                      ? const CircularProgressIndicator()
+                      : Text(isUpdate ? "Salvar" : "Cadastrar", style: context.textStyles.textBold.copyWith(fontSize: 20))
                   )
                 )
               )

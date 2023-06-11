@@ -12,7 +12,7 @@ class Navbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MainController mainController = context.read<MainController>()..initTimer();
+    final MainController mainController = context.read<MainController>()..initTimer();
 
     return Container(
       height: 95,

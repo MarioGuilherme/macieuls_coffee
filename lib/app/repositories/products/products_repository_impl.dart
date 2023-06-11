@@ -3,8 +3,9 @@ import "dart:developer";
 
 import "package:dio/dio.dart";
 
-import "package:macieuls_coffee/app/core/exceptions/repository_expcetion.dart";
+import "package:macieuls_coffee/app/core/exceptions/repository_exception.dart";
 import "package:macieuls_coffee/app/core/http/http_client.dart";
+import "package:macieuls_coffee/app/core/http/http_method.dart";
 import "package:macieuls_coffee/app/models/product_model.dart";
 import "package:macieuls_coffee/app/repositories/products/products_repository.dart";
 
@@ -17,6 +18,9 @@ class ProductsRepositoryImpl implements ProductsRepository {
   Future<List<ProductModel>> getProducts() async {
     try {
       final Response result = await this.httpClient.restRequest("/produtos", HttpMethod.GET);
+
+      if (result.data == null) return [];
+
       return List<ProductModel>.from(jsonDecode(result.data).map((x) => ProductModel.fromJson(x)));
     } on DioError catch (e, s) {
       log("Erro ao buscar os produtos", error: e, stackTrace: s);
@@ -30,8 +34,8 @@ class ProductsRepositoryImpl implements ProductsRepository {
       final Response result = await this.httpClient.restRequest("/produto", HttpMethod.GET, { "idProduto": idProduct });
       return ProductModel.fromJson(result.data);
     } on DioError catch (e, s) {
-      log("Erro ao buscar formas de pagamentos", error: e, stackTrace: s);
-      throw RepositoryException(message: "Erro ao buscar formas de pagamentos");
+      log("Erro ao buscar os produtos!", error: e, stackTrace: s);
+      throw RepositoryException(message: "Erro ao buscar os produtos!");
     }
   }
 
@@ -41,7 +45,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
       final Response result = await this.httpClient.restRequest("/produto", HttpMethod.POST, product.toJson());
       return result.statusCode == 201;
     } on DioError catch (e, s) {
-      log("Erro ao cadastrar produto", error: e, stackTrace: s);
+      log("Erro ao cadastrar produto!", error: e, stackTrace: s);
       throw RepositoryException(message: "Erro ao cadastrar produto");
     }
   }
@@ -55,7 +59,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
       });
       return result.statusCode == 204;
     } on DioError catch (e, s) {
-      log("Erro ao atualizar produto", error: e, stackTrace: s);
+      log("Erro ao atualizar produto!", error: e, stackTrace: s);
       throw RepositoryException(message: "Erro ao atualizar produto");
     }
   }
@@ -66,8 +70,8 @@ class ProductsRepositoryImpl implements ProductsRepository {
       final Response<dynamic> result = await this.httpClient.restRequest("/produto", HttpMethod.DELETE, { "idProduto": idProduct });
       return result.statusCode == 204;
     } on DioError catch (e, s) {
-      log("Erro ao buscar formas de pagamentos", error: e, stackTrace: s);
-      throw RepositoryException(message: "Erro ao buscar formas de pagamentos");
+      log("Erro ao excluir o produto!", error: e, stackTrace: s);
+      throw RepositoryException(message: "Erro ao excluir o produto!");
     }
   }
 }

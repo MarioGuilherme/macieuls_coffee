@@ -18,13 +18,13 @@ extension FormatDoubleExtension on String {
     if (price.contains(",") && decimalIndex != -1 && decimalIndex + 3 <= price.length)
       price = price.substring(0, decimalIndex + 3);
 
-    List<String> houses = price.split(",");
-    String houseWithoutDecimal = houses.first;
-    List<String> parts = [];
+    final List<String> houses = price.split(",");
+    final String houseWithoutDecimal = houses.first;
+    final List<String> parts = [];
     const int lengthOfPart = 3;
 
     for (int i = 0; i < houseWithoutDecimal.length; i += lengthOfPart) {
-      int end = (i + lengthOfPart <= houseWithoutDecimal.length) ? i + lengthOfPart : houseWithoutDecimal.length;
+      final int end = (i + lengthOfPart <= houseWithoutDecimal.length) ? i + lengthOfPart : houseWithoutDecimal.length;
       parts.add(houseWithoutDecimal.substring(i, end));
     }
 

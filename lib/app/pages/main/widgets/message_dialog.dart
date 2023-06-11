@@ -6,8 +6,9 @@ import "package:macieuls_coffee/app/core/ui/styles/text_styles.dart";
 
 class MessageDialog extends StatelessWidget {
   final String message;
+  final Icon icon;
 
-  const MessageDialog({super.key, required this.message});
+  const MessageDialog({super.key, required this.message, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class MessageDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.check_circle, color: context.colors.primary, size: 64),
+            this.icon,
             const SizedBox(height: 10),
             Text(
               this.message,
