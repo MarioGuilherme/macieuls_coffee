@@ -32,25 +32,59 @@
   <title>Macieuls Coffee</title>
   <link rel="manifest" href="manifest.json">
 
+  <style>
+    * {
+      font-family: "inter", sans-serif
+    }
+
+    body {
+      font-size: 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      font-weight: bold
+    }
+
+    #loading {
+      text-align: center
+    }
+
+    #loading-text {
+      text-align: center;
+      font-size: 2em
+    }
+  </style>
+
   <script>
     // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = "2758928640";
+    var serviceWorkerVersion = "1923864281";
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
 <body>
+  <div id="loading">
+    <img src="https://media2.giphy.com/media/ex5WFJM3hioHAIu5Vy/giphy.gif">
+    <div id="loading-text">
+      Carregando entrypoint...
+    </div>
+  </div>
   <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
+    window.addEventListener("load", () => {
+      const loading = document.querySelector("#loading-text");
+      loading.textContent = "Carregando o App Macieuls Coffee......";
+
       _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
+        serviceWorker: { serviceWorkerVersion },
+        onEntrypointLoaded: async engineInitializer => {
+          loading.textContent = "Inicializando o App Macieuls Coffee...";
+          const appRunner = await engineInitializer.initializeEngine();
+
+          document.querySelector("#loading").style.display = "none";
+          await appRunner.runApp();
         }
       });
     });
